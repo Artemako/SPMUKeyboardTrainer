@@ -1,4 +1,4 @@
-# SPMUKeyboardTrainer
+# SPMU-keyboard-trainer
 Keyboard simulator for SPMU students with the ability to download short texts from Wikipedia.
 
 Interface language: Russian.
