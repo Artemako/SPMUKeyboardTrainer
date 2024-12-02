@@ -1,13 +1,25 @@
-# old-keyboard-trainer
-Keyboard simulator for students with the ability to download short texts from Wikipedia.
+![изображение](https://github.com/user-attachments/assets/61ccd40e-1e0f-4ad6-8cc9-d2231fb61995)
 
-Interface language: Russian.
-The simulator is designed for English and Russian.
+# keyboard-trainer
+Декстопный клавиатурный тренажёр с возможностью загрузки коротких текстов из Википедии, предназначенный для студентов Горного университета. 
 
-Before launching the application, make sure that the following are installed:
- - Python 3.10
- - PyQt6 6.3.0
- - PyQt6-Qt6 6.3.0
- - PyQt6-sip 13.3.1
- - pyqtgraph 0.12.4
- - requests==2.28.1
+# Особенности
+- Возможность загружать кастомный текст для тренировки
+- Возможность загрузки коротких текстов из Википедии
+
+![изображение](https://github.com/user-attachments/assets/7fc1ed01-43dd-44ee-bf53-48308cc01ec0)
+
+- Визуализация клавиш и сочетание клавиатуры для подсказки 
+  
+![изображение](https://github.com/user-attachments/assets/18dc1457-2d96-406b-8b0d-1f1399117854)
+
+
+
+
+# Системные требования 
+- Windows 10/11
+
+# Поддерживаемые языки
+Интерфейс: Русский
+
+Тренажёр: Русский, English
