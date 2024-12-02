@@ -13,7 +13,6 @@ import datetime
 
 
 class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -34,7 +33,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.current_time = 0
         self.current_language = "ru"
 
-        self.main_db = sqlite3.connect('databases/db_main.db')
+        self.main_db = sqlite3.connect("databases/db_main.db")
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(lambda: self.update_tick_timer())
@@ -77,18 +76,26 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def add_functions_wiki(self):
         self.wiki_text_load = False
         self.wikiWindow.wikifindbutton.clicked.connect(lambda: self.create_request())
-        self.wikiWindow.wikiluckybutton.clicked.connect(lambda: self.create_random_request())
+        self.wikiWindow.wikiluckybutton.clicked.connect(
+            lambda: self.create_random_request()
+        )
 
-        self.wikiWindow.loadwikitextbutton.clicked.connect(lambda: self.load_wiki_text_and_close())
+        self.wikiWindow.loadwikitextbutton.clicked.connect(
+            lambda: self.load_wiki_text_and_close()
+        )
 
     def add_functions_texts(self):
         self.update_choice_title()
-        self.textsWindow.choice_title.currentIndexChanged.connect(lambda: self.show_current_index_title_text())
+        self.textsWindow.choice_title.currentIndexChanged.connect(
+            lambda: self.show_current_index_title_text()
+        )
 
     def show_current_index_title_text(self):
         try:
             cursor_table = self.main_db.cursor()
-            cursor_table.execute(f"SELECT text FROM texts WHERE title LIKE '%{self.textsWindow.choice_title.currentText()}%'")
+            cursor_table.execute(
+                f"SELECT text FROM texts WHERE title LIKE '%{self.textsWindow.choice_title.currentText()}%'"
+            )
             data = cursor_table.fetchone()
             self.textsWindow.selected_text.setText(data[0])
         except:
@@ -116,11 +123,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.condition_activity_textline_false()
             self.text_load = True
         else:
-            self.wikiWindow.wikitext.setText("Нельзя загрузить, так как была замечена ошибка.")
+            self.wikiWindow.wikitext.setText(
+                "Нельзя загрузить, так как была замечена ошибка."
+            )
 
     def create_request(self):
         self.input_text = self.wikiWindow.wikisearchline.text()
-        url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + str(self.input_text).replace(" ", "_")
+        url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + str(
+            self.input_text
+        ).replace(" ", "_")
         self.find_current_request(url)
 
     def create_random_request(self):
@@ -158,7 +169,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def import_text_offline_db(self, enter):
         cursor_table = self.main_db.cursor()
-        cursor_table.execute(f"SELECT title, text FROM texts WHERE title LIKE '%{enter}%'")
+        cursor_table.execute(
+            f"SELECT title, text FROM texts WHERE title LIKE '%{enter}%'"
+        )
         data = cursor_table.fetchone()
         self.responce_text = data[1]
         self.responce_title = data[0]
@@ -166,7 +179,7 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def insert_textid_text_db(self):
         cursor_table = self.main_db.cursor()
         rows = [self.responce_title, self.responce_text]
-        cursor_table.execute('insert into texts (title, text) values (?,?)', rows)
+        cursor_table.execute("insert into texts (title, text) values (?,?)", rows)
         self.main_db.commit()
 
     def highlight_keys(self):
@@ -184,9 +197,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "0": [(500, 0), (50, 50), False],
             "-": [(550, 0), (50, 50), False],
             "=": [(600, 0), (50, 50), False],
-
             "!": [(50, 0), (50, 50), True],
-            "\"": [(100, 0), (50, 50), True],
+            '"': [(100, 0), (50, 50), True],
             "№": [(150, 0), (50, 50), True],
             ";": [(200, 0), (50, 50), True],
             "%": [(250, 0), (50, 50), True],
@@ -197,7 +209,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             ")": [(500, 0), (50, 50), True],
             "_": [(550, 0), (50, 50), True],
             "+": [(600, 0), (50, 50), True],
-
             "й": [(75, 50), (50, 50), False],
             "ц": [(125, 50), (50, 50), False],
             "у": [(175, 50), (50, 50), False],
@@ -210,7 +221,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "з": [(525, 50), (50, 50), False],
             "х": [(575, 50), (50, 50), False],
             "ъ": [(625, 50), (50, 50), False],
-
             "ф": [(88, 100), (50, 50), False],
             "ы": [(138, 100), (50, 50), False],
             "в": [(188, 100), (50, 50), False],
@@ -222,10 +232,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "д": [(488, 100), (50, 50), False],
             "ж": [(538, 100), (50, 50), False],
             "э": [(588, 100), (50, 50), False],
-
             "\\": [(637, 100), (50, 50), False],
             "\/": [(637, 100), (50, 50), True],
-
             "я": [(112, 150), (50, 50), False],
             "ч": [(162, 150), (50, 50), False],
             "с": [(212, 150), (50, 50), False],
@@ -236,10 +244,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "б": [(462, 150), (50, 50), False],
             "ю": [(512, 150), (50, 50), False],
             ".": [(562, 150), (50, 50), False],
-
             ",": [(562, 150), (50, 50), True],
-
-            " ": [(200, 200), (300, 50), False]
+            " ": [(200, 200), (300, 50), False],
         }
 
         dict_en = {
@@ -256,7 +262,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "0": [(500, 0), (50, 50), False],
             "-": [(550, 0), (50, 50), False],
             "=": [(600, 0), (50, 50), False],
-
             "~": [(0, 0), (50, 50), True],
             "!": [(50, 0), (50, 50), True],
             "@": [(100, 0), (50, 50), True],
@@ -270,7 +275,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             ")": [(500, 0), (50, 50), True],
             "_": [(550, 0), (50, 50), True],
             "+": [(600, 0), (50, 50), True],
-
             "q": [(75, 50), (50, 50), False],
             "w": [(125, 50), (50, 50), False],
             "e": [(175, 50), (50, 50), False],
@@ -283,10 +287,8 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "p": [(525, 50), (50, 50), False],
             "[": [(575, 50), (50, 50), False],
             "]": [(625, 50), (50, 50), False],
-
             "{": [(575, 50), (50, 50), True],
             "}": [(625, 50), (50, 50), True],
-
             "a": [(88, 100), (50, 50), False],
             "s": [(138, 100), (50, 50), False],
             "d": [(188, 100), (50, 50), False],
@@ -298,13 +300,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             "l": [(488, 100), (50, 50), False],
             ";": [(538, 100), (50, 50), False],
             "'": [(588, 100), (50, 50), False],
-
             ":": [(537, 100), (50, 50), True],
-            "\"": [(587, 100), (50, 50), True],
-
+            '"': [(587, 100), (50, 50), True],
             "\\": [(637, 100), (50, 50), False],
             "|": [(637, 100), (50, 50), True],
-
             "z": [(112, 150), (50, 50), False],
             "x": [(162, 150), (50, 50), False],
             "c": [(212, 150), (50, 50), False],
@@ -315,12 +314,10 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             ",": [(462, 150), (50, 50), False],
             ".": [(512, 150), (50, 50), False],
             "/": [(562, 150), (50, 50), False],
-
             "<": [(462, 150), (50, 50), True],
             ">": [(512, 150), (50, 50), True],
             "?": [(562, 150), (50, 50), True],
-
-            " ": [(200, 200), (300, 50), False]
+            " ": [(200, 200), (300, 50), False],
         }
 
         symbol = self.text_string[0]
@@ -369,7 +366,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def update_tick_timer(self):
         self.current_time += 1
-        self.symbols_in_second.append((self.index_current_character / self.current_time) * 60)
+        self.symbols_in_second.append(
+            (self.index_current_character / self.current_time) * 60
+        )
         self.show_time()
 
     def show_time(self):
@@ -387,11 +386,13 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def load_custom_file(self):
         custom_file = ""
-        custom_file, _ = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', './', "Text files (*.txt)")
+        custom_file, _ = QtWidgets.QFileDialog.getOpenFileName(
+            None, "Open File", "./", "Text files (*.txt)"
+        )
         print(custom_file)
         if custom_file != "":
             try:
-                f = open(custom_file, 'r', encoding='utf-8')
+                f = open(custom_file, "r", encoding="utf-8")
                 self.text_string = ""
                 file = f.readlines()
 
@@ -402,7 +403,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 self.create_text(file)
             except UnicodeDecodeError:
-                self.textline.setText("Проблемы с кодировкой... Выберите урок или загрузите текст")
+                self.textline.setText(
+                    "Проблемы с кодировкой... Выберите урок или загрузите текст"
+                )
                 self.animation_error()
 
     def textline_focus(self):
@@ -458,11 +461,14 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def animation_error(self):
         self.textline.setReadOnly(True)
-        self.textline.setStyleSheet("background-color: rgb(246, 128, 140);\n"
-                                    "border: 4px solid #ED1F33;")
+        self.textline.setStyleSheet(
+            "background-color: rgb(246, 128, 140);\n" "border: 4px solid #ED1F33;"
+        )
         QtTest.QTest.qWait(150)
-        self.textline.setStyleSheet("background-color: rgb(255, 255, 255);\n"
-                                    "border: 4px solid rgb(245, 121, 32);")
+        self.textline.setStyleSheet(
+            "background-color: rgb(255, 255, 255);\n"
+            "border: 4px solid rgb(245, 121, 32);"
+        )
         self.textline.setReadOnly(False)
 
     def keyPressEvent(self, event):
@@ -519,7 +525,9 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def open_lessons_db(self, key_lesson):
         cursor_lessons = self.main_db.cursor()
-        cursor_lessons.execute(f"SELECT * FROM Lessons WHERE lesson LIKE '%{key_lesson}%'")
+        cursor_lessons.execute(
+            f"SELECT * FROM Lessons WHERE lesson LIKE '%{key_lesson}%'"
+        )
         title_and_text = cursor_lessons.fetchone()
         self.responce_text = title_and_text[1]
         self.responce_title = title_and_text[0]
@@ -541,7 +549,15 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             percent = int(x / y * 100)
         else:
             percent = "?"
-        self.numberofchars.setText("Количество символов: " + str(x) + " из " + str(y) + ", " + str(percent) + "%")
+        self.numberofchars.setText(
+            "Количество символов: "
+            + str(x)
+            + " из "
+            + str(y)
+            + ", "
+            + str(percent)
+            + "%"
+        )
 
     def show_results_window(self):
         self.resultsWindow = ResultDialogApp()
@@ -567,29 +583,54 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.add_functions_texts()
         self.textsWindow.exec()
 
-
     def update_table_results(self):
         cursor_table = self.main_db.cursor()
         cursor_table.execute(
-            "SELECT date, time, symbols, errors, speed, text FROM user_results, texts WHERE user_results.text_id = texts.title")
+            "SELECT date, time, symbols, errors, speed, text FROM user_results, texts WHERE user_results.text_id = texts.title"
+        )
         cursor_table_too = self.main_db.cursor()
         cursor_table_too.execute(
-            "SELECT date, time, symbols, errors, speed, text FROM user_results, lessons WHERE user_results.text_id = lessons.lesson")
-        lines = sorted(list(cursor_table.fetchall() + cursor_table_too.fetchall()), key=lambda tup: tup[0], reverse=True)
+            "SELECT date, time, symbols, errors, speed, text FROM user_results, lessons WHERE user_results.text_id = lessons.lesson"
+        )
+        lines = sorted(
+            list(cursor_table.fetchall() + cursor_table_too.fetchall()),
+            key=lambda tup: tup[0],
+            reverse=True,
+        )
         self.tableWindow.table_view.setHorizontalHeaderLabels(
-            ["Дата", "Время", "Количество символов", "Количество ошибок", "Скорость", "Текст"])
+            [
+                "Дата",
+                "Время",
+                "Количество символов",
+                "Количество ошибок",
+                "Скорость",
+                "Текст",
+            ]
+        )
         self.tableWindow.table_view.setColumnCount(6)
         self.tableWindow.table_view.setRowCount(len(lines))
         print(lines)
         for row_position in range(0, len(lines)):
             for column_position in range(0, 6):
-                self.tableWindow.table_view.setItem(row_position, column_position,
-                                                    QtWidgets.QTableWidgetItem(lines[row_position][column_position]))
+                self.tableWindow.table_view.setItem(
+                    row_position,
+                    column_position,
+                    QtWidgets.QTableWidgetItem(lines[row_position][column_position]),
+                )
 
     def add_query_to_table_results(self, data):
         cursor_table = self.main_db.cursor()
-        rows = [(str(data[0]), str(data[1]), str(data[2]), str(data[3]), str(data[4]), str(data[5]))]
-        cursor_table.executemany('insert into user_results values (?,?,?,?,?,?)', rows)
+        rows = [
+            (
+                str(data[0]),
+                str(data[1]),
+                str(data[2]),
+                str(data[3]),
+                str(data[4]),
+                str(data[5]),
+            )
+        ]
+        cursor_table.executemany("insert into user_results values (?,?,?,?,?,?)", rows)
         self.main_db.commit()
 
     def set_results(self):
@@ -616,18 +657,39 @@ class MainApp(QtWidgets.QMainWindow, Ui_MainWindow):
             percent2 = 100
 
         self.resultsWindow.results.setText(
-            "<html><head/><body><p>Время: " + self.seconds_to_str(t) + "</p><p>Количество символов: " + str(
-                x) + " из " + str(y) + ", " + str(percent1) + "%</p><p>Количество ошибок: " + str(
-                self.number_of_errors) + ", " + str(percent2) + "%</p><p>Скорость: " + str(
-                v) + " симв/мин</p></body></html>")
-        self.resultsWindow.graphWidget.setBackground('w')
+            "<html><head/><body><p>Время: "
+            + self.seconds_to_str(t)
+            + "</p><p>Количество символов: "
+            + str(x)
+            + " из "
+            + str(y)
+            + ", "
+            + str(percent1)
+            + "%</p><p>Количество ошибок: "
+            + str(self.number_of_errors)
+            + ", "
+            + str(percent2)
+            + "%</p><p>Скорость: "
+            + str(v)
+            + " симв/мин</p></body></html>"
+        )
+        self.resultsWindow.graphWidget.setBackground("w")
         pen = pyqtgraph.mkPen(color=(245, 121, 32), width=2)
         self.resultsWindow.graphWidget.setMouseEnabled(False, False)
-        self.resultsWindow.graphWidget.plot(list(range(0, self.current_time + 1)), self.symbols_in_second, pen=pen)
+        self.resultsWindow.graphWidget.plot(
+            list(range(0, self.current_time + 1)), self.symbols_in_second, pen=pen
+        )
         date = datetime.datetime.now().strftime("%d-%m-%Y %H:%M")
         self.add_query_to_table_results(
-            [date, self.seconds_to_str(t), str(x) + " из " + str(y) + ", " + str(percent1) + "%",
-             str(self.number_of_errors) + ", " + str(percent2) + "%", str(v) + " симв/мин", self.responce_title])
+            [
+                date,
+                self.seconds_to_str(t),
+                str(x) + " из " + str(y) + ", " + str(percent1) + "%",
+                str(self.number_of_errors) + ", " + str(percent2) + "%",
+                str(v) + " симв/мин",
+                self.responce_title,
+            ]
+        )
 
 
 class ResultDialogApp(QtWidgets.QDialog, Ui_Statistics):
@@ -649,7 +711,9 @@ class TableDialogApp(QtWidgets.QDialog, Ui_Table_results):
         super().__init__()
         self.setupUi(self)
         self.retranslateUi(self)
-        self.table_view.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        self.table_view.horizontalHeader().setSectionResizeMode(
+            QtWidgets.QHeaderView.ResizeMode.ResizeToContents
+        )
 
 
 class WikiDialogApp(QtWidgets.QDialog, Ui_Wiki):
@@ -673,5 +737,5 @@ def main():
     sys.exit(app.exec())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

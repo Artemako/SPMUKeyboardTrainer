@@ -1,0 +1,2 @@
+python -m nuitka --standalone --follow-imports --disable-console main.pyw
+python -m nuitka --standalone --follow-imports --plugin-enable=pyqt6 --include-qt-plugins=sensible --disable-console main.pyw
